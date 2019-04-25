@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Train Time</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="assets/css/resets.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+  <body>
+      <div class="container-fluid">
+    <div class="row">
+       
+                <div class="shadow p-3 mb-5 bg-primary text-white rounded w-100">
+                        <div class="container">
+                            <h1 class="display-3">Train Time | PRO</h1>
+                            <p class="lead muted-text">Train Schedule Administration System</p>
+                        </div>
+                    </div>
+
+    </div>
+      </div>
+      <div class="container">
+            <div class='row'>
+           <div class="col-12">
+                    <div class="card shadow-sm p-3 mb-5 bg-white rounded w-100">
+                        <div class="card-header">
+                            <h5 card="card-title">Live Train Schedule</h5>
+                        </div>
+                        <div class='card-body'>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Train Name</th>
+                                        <th scope="col">Destination</th>
+                                        <th scope="col">First Trian Arrives (HH:MM)</th>
+                                        <th scope="col">Frequency (Minutes)</th>
+                                        <th scope="col">Next Train Arrives</th>
+                                    </tr>
+                                </thead>
+                                <tbody id='tableBody'>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        </div>
+      </div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm p-3 mb-5 bg-white rounded w-100">
+                <div class="card-body">
+                    <h4 class="card-title">Add a Train</h4>
+                    <div id="validation" class="alert alert-danger" role="alert" style="display:none;">
+                    </div>
+                   
+                            <div class="form-group">
+                                    <div class="row">
+                                    <div class="col-9">
+                                    <label for="trainName">Train Name</label>
+                                    <input type="text" name="" id="trainName" class="form-control" placeholder="Train Name" aria-describedby="helpId">
+
+                                    <label for="destination">Destination</label>
+                                    <input type="text" name="" id="destination" class="form-control" placeholder="Downtown" aria-describedby="helpId">
+        
+                                    </div>
+                                    <div class="col-3">  
+                                    <label class="center">First Train Arrial Time (HH:00)</label>
+                                    <div>
+                                    <i class="fas fa-clock    "></i>    
+                                    <input type="number" name="" id="trainArriveH" class="hh form-control" placeholder="00" aria-describedby="helpId"><span> : </span>
+                                    <input type="number" name="" id="trainArriveM" class="mm form-control" placeholder="00" aria-describedby="helpId">
+                                    </div>   
+                                    <label class="center" for="frequency">Frequency</label>
+                                    <div >
+                                            <i class="fas fa-clock    "></i> 
+                                    <input type="number" name="" id="frequency" class="mm form-control" placeholder="0" aria-describedby="helpId">
+                                    <button type="button" id="addit" class="btn btn-primary btn-lg fas fa-plus-square float-right"> Add</button>    
+                                </div>
+                                    </div>
+                                    </div>
+                                  
+                                </div>
+                    
+                   
+                </div>
+            </div>
+                
+        </div>
+    </div>
+    
+</div>
+   
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="assets/js/moment.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>
