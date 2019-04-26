@@ -30,29 +30,79 @@ var database = firebase.database();
 var trainsRef = database.ref('trains');
 var trainRow = 0;
 var isAdding = false;
-
+var clockTicker;
 $(document).ready(function(){
 
-    trainsRef.on('child_added',function(snap){
+    database.ref('trains').on('child_added', function (snap) {
 
-
+        if (snap) {
+            var tr = createRow(snap.val())
+            $('#tableBody').append(tr)
+        }
 
     })
 
-    $('#addit').click(function(event){
+    $('#addit').click(function (event) {
+        $('#validation').hide()
         $('#addit').prop('disabled',true)
         if(!isAdding){
             isAdding = true;
             var trainData = makeTrainObject()
             if(trainData !== false){
-                trainsRef.set(trainData)
+                database.ref('trains').push(trainData)
             }
-            $('#addit').prop('disabled',false)
+            
+            isAdding = false;
         } 
+        $('#addit').prop('disabled', false)
         return
     })
 
+    $('#trainArriveH').focusout(digithelper)
+    $('#trainArriveM').focusout(digithelper)
+    $('#frenquency').focusout(digithelper,true)
+    clockTicker = setInterval(ticker, 10000);
+
 })
+function digithelper(event, l = false) {
+    var f = event.target.value
+    if (!l) { 
+    if (parseInt(f) < 10) {
+        f = "0" + f
+        event.target.value = f
+    } else {
+        event.target.value = f
+    }
+    } else {
+        if (f < 10) {
+             event.target.value = f
+        }
+    }
+
+}
+function ticker() {
+    var currentTime = moment()
+    trainRow
+    for (let i = 0; i < trainRow; i++) {
+        var id = 'train_' + [i];
+        var NextTrian = parseInt($(id).text()) - 10
+        
+    }
+
+
+}
+function nextTrain(_firstTrain, _frequency) {
+    if (hasFirstTrainArrived(_firstTrain)) {
+    
+}
+
+
+}
+function hasFirstTrainArrived(_arrivalTime){
+    return (_arrivalTime >= _currentTime) ? true : false
+
+
+}
 
 
 function makeTrainObject(){
@@ -64,13 +114,47 @@ function makeTrainObject(){
     trainArriveM: $('#trainArriveM').val(),
     frequency: $('#frequency').val()
     }
-    clearForm()
+    
     if(validateForm(trainob)){
+        clearForm()
         return trainob
     }   
     return false
 }
-function validateForm(trainob){
+function validateForm(_trainob){
+    var error = []
+    if (_trainob.trainName.length < 1) {
+        error.push('Train Name is missing.')
+    }
+    if (_trainob.destination.length < 1) {
+        error.push('Train destination is missing.')
+    }
+
+    var isValid = moment(_trainob.trainArriveH + ":" + _trainob.trainArriveM, "HH:mm").isValid()
+    if (!isValid) {
+        error.push('Train Arrival Time is Invalid.')
+    }
+    var isValidFre = moment("00:" + _trainob.frequency, "HH:mm").isValid()
+    if (!isValid) {
+        error.push('Train Freqquency is Invalid.')
+        
+
+    }
+    if (error.length > 0) {
+        errors(error)
+        return false
+    }
+    return true
+
+}
+function errors(_error) {
+    
+    $('#validation').empty()
+    _error.forEach(element => {
+    $('#validation').append($('<div>').text(element))
+    });
+    $('#validation').show()
+
 
 }
 function clearForm(){
@@ -80,41 +164,46 @@ function clearForm(){
     $('#trainArriveM').val('')
     $('#frequency').val('')
 }
-function createRow(_rowData) {
+function createRow(_trainob) {
    
     
     var cellName = $('<td>')
-    cellName.text(_rowData.trainName)
+    cellName.text(_trainob.trainName)
+    
     var cellDest = $('<td>')
-    cellDest.text(_rowData.destination)
+    cellDest.text(_trainob.destination)
+    
     var cellFirst = $('<td>')
-    cellFirst.text(_rowData.firstTrain)
+    cellFirst.text(moment().format(_trainob.trainArriveH + ":" + _trainob.trainArriveM, "HH:mm"))
+    
     var cellFrequency = $('<td>')
-    cellFrequency.text(_rowData.frequncy)
+    cellFrequency.text(_trainob.frequency)
+    
     var cellNextTrain = $('<td>')
-    cellNextTrain.text(_rowData.frequncy)
-    cellNextTrain.attr('id','train_'+trainRow)
+    cellNextTrain.text(getTimeofNextTrain(_trainob.trainArriveH, _trainob.trainArriveM))
+    cellNextTrain.attr('id', 'train_' + trainRow)
+
+    
+    
+   
+    cellNextTrain.text()
+
     var row = $('<tr>')
     row.append(cellName)
-        .append(cellRole)
-        .append(cellStartDate)
-        .append(cellMonthsWored)
-        .append(cellPayRate)
-        .append(cellTotalBilled)
-        trainRow++
+        .append(cellDest)
+        .append(cellFirst)
+        .append(cellNextTrain);
+    trainRow++
     return row
 
 }
-function toMoney(_numbers) {
-    var prefix = "$ "
-    return prefix + parseFloat(_numbers).toFixed(2)
-}
+
 function getTimeofNextTrain(_hh,_mm) {
     var time = hhmmTimeToMoment(_hh,_mm)
     return getTimeDiffInMinutes(time)
 }
 function hhmmTimeToMoment(_hh,_mm) {
-    return moment(_hh + ":" + _mm, "HH:MM");
+    return moment().format(_hh + ":" + _mm, "HH:mm");
 }
 function getTimeDiffInMinutes(_moment) {
     return moment().diff(moment(_moment), 'minutes', true)
