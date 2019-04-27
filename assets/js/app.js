@@ -30,13 +30,14 @@ var database = firebase.database();
 var trainsRef = database.ref('trains');
 var trainRow = 0;
 var isAdding = false;
-var clockTicker;
+var trainClockTickers = [];
 $(document).ready(function(){
 
     database.ref('trains').on('child_added', function (snap) {
 
         if (snap) {
             var tr = createRow(snap.val())
+        
             $('#tableBody').append(tr)
         }
 
@@ -61,7 +62,7 @@ $(document).ready(function(){
     $('#trainArriveH').focusout(digithelper)
     $('#trainArriveM').focusout(digithelper)
     $('#frenquency').focusout(digithelper,true)
-    clockTicker = setInterval(ticker, 10000);
+   
 
 })
 function digithelper(event, l = false) {
@@ -95,7 +96,10 @@ function nextTrain(_firstTrain, _frequency) {
     if (hasFirstTrainArrived(_firstTrain)) {
     
 }
-
+function firstTrainArrives(_firstTrain, _frequency) {
+    if (hasFirstTrainArrived(_firstTrain)) {
+    }
+}
 
 }
 function hasFirstTrainArrived(_arrivalTime){
@@ -112,7 +116,8 @@ function makeTrainObject(){
     destination: $('#destination').val(),
     trainArriveH: $('#trainArriveH').val(),
     trainArriveM: $('#trainArriveM').val(),
-    frequency: $('#frequency').val()
+    frequency: $('#frequency').val(),
+    has1stTrainArrived: false
     }
     
     if(validateForm(trainob)){
@@ -174,24 +179,41 @@ function createRow(_trainob) {
     cellDest.text(_trainob.destination)
     
     var cellFirst = $('<td>')
-    cellFirst.text(moment().format(_trainob.trainArriveH + ":" + _trainob.trainArriveM, "HH:mm"))
-    
+    var timet = moment().format(_trainob.trainArriveH + ":" + _trainob.trainArriveM, "HH:mm")
+    cellFirst.text(timet)
+    var firstcame = moment().isSameOrAfter(moment(_trainob.trainArriveH + ":" + _trainob.trainArriveM, "HH:mm")) 
     var cellFrequency = $('<td>')
     cellFrequency.text(_trainob.frequency)
-    
+    var duration = parseFloat(_trainob.frequency)
     var cellNextTrain = $('<td>')
-    cellNextTrain.text(getTimeofNextTrain(_trainob.trainArriveH, _trainob.trainArriveM))
-    cellNextTrain.attr('id', 'train_' + trainRow)
+    var trid ='train_' + trainRow
+ 
+    cellNextTrain.attr('id', trid)
+    var ntrainTime;
+//                      
 
+    if(firstcame){
+        var d = new moment()
+        var c = new moment(_trainob.trainArriveH + ":" + _trainob.trainArriveM, "HH:mm")
+        var dur = moment.duration(d.diff(c))
+        var dd = (duration - (duration/dur.asMinutes()))
+        ntrainTime = moment.duration(dd, 'minutes').asMinutes()
+      
+    }else{
+        //how many minutes to the first trian arival time | arivalTime - nowTime 
+        var d = new moment()
+        var c = new moment(_trainob.trainArriveH + ":" + _trainob.trainArriveM, "HH:mm")
+        var dur = moment.duration(d.diff(c))
+        ntrainTime = dur.asMinutes()
+    }
     
     
-   
-    cellNextTrain.text()
-
+    cellNextTrain.text(ntrainTime)
     var row = $('<tr>')
     row.append(cellName)
         .append(cellDest)
         .append(cellFirst)
+        .append(cellFrequency)
         .append(cellNextTrain);
     trainRow++
     return row
