@@ -67,10 +67,12 @@ $(document).ready(function(){
 })
 function digithelper(event, l = false) {
     var f = event.target.value
-    if (!l) { 
-    if (parseInt(f) < 10) {
+    if (!l){ 
+    if (parseInt(f) < 10 && parseInt(f) > -1) {
         f = "0" + f
         event.target.value = f
+    } else if (parseInt(f) == -1) {
+        event.target.value = "00"
     } else {
         event.target.value = f
     }
@@ -81,33 +83,12 @@ function digithelper(event, l = false) {
     }
 
 }
-function ticker() {
-    var currentTime = moment()
-    trainRow
-    for (let i = 0; i < trainRow; i++) {
-        var id = 'train_' + [i];
-        var NextTrian = parseInt($(id).text()) - 10
-        
-    }
 
-
-}
 function nextTrain(_firstTrain, _frequency) {
     if (hasFirstTrainArrived(_firstTrain)) {
     
-}
-function firstTrainArrives(_firstTrain, _frequency) {
-    if (hasFirstTrainArrived(_firstTrain)) {
     }
 }
-
-}
-function hasFirstTrainArrived(_arrivalTime){
-    return (_arrivalTime >= _currentTime) ? true : false
-
-
-}
-
 
 function makeTrainObject(){
  
@@ -139,9 +120,9 @@ function validateForm(_trainob){
     if (!isValid) {
         error.push('Train Arrival Time is Invalid.')
     }
-    var isValidFre = moment("00:" + _trainob.frequency, "HH:mm").isValid()
-    if (!isValid) {
-        error.push('Train Freqquency is Invalid.')
+    var isValidFre = (parseInt(_trainob.frequency) > 0) && (parseInt(_trainob.frequency) < 1440)
+    if (!isValidFre) {
+        error.push('Train Frequency is Invalid. Must be greater than 0 and less than 1,440 minutes.')
         
 
     }
@@ -179,32 +160,47 @@ function createRow(_trainob) {
     cellDest.text(_trainob.destination)
     
     var cellFirst = $('<td>')
-    var timet = moment().format(_trainob.trainArriveH + ":" + _trainob.trainArriveM, "HH:mm")
-    cellFirst.text(timet)
-    var firstcame = moment().isSameOrAfter(moment(_trainob.trainArriveH + ":" + _trainob.trainArriveM, "HH:mm")) 
+    if (!_trainob.trainArriveM.length) {
+        _trainob.trainArriveM = "00"
+    }
+    if (!_trainob.trainArriveH.length) {
+        _trainob.trainArriveH = "00"
+    }
+    var timeFirst = moment().format(_trainob.trainArriveH + ":" + _trainob.trainArriveM, "HH:mm")
+    cellFirst.text(timeFirst)
+    var firstTrainCame = moment().isSameOrAfter(moment(_trainob.trainArriveH + ":" + _trainob.trainArriveM, "HH:mm")) 
     var cellFrequency = $('<td>')
     cellFrequency.text(_trainob.frequency)
-    var duration = parseFloat(_trainob.frequency)
+    var frequency = parseFloat(_trainob.frequency * 60) // in seconds
+    console.log("Train comes every " + frequency + " seconds")
     var cellNextTrain = $('<td>')
     var trid ='train_' + trainRow
- 
     cellNextTrain.attr('id', trid)
     var ntrainTime;
-//                      
-
-    if(firstcame){
-        var d = new moment()
+    if (firstTrainCame) {
+        var d = new moment() // time now
+        console.log("now: " + d.format('HH:mm'))
         var c = new moment(_trainob.trainArriveH + ":" + _trainob.trainArriveM, "HH:mm")
-        var dur = moment.duration(d.diff(c))
-        var dd = (duration - (duration/dur.asMinutes()))
-        ntrainTime = moment.duration(dd, 'minutes').asMinutes()
+        console.log("time of first train " + c.format('HH:mm'))
+        var timePastSinceFirstTrain = moment.duration(d.diff(c))
+        console.log("Seconds past since first train " + timePastSinceFirstTrain.asSeconds())
+        var numberOfTimesTrainHasCome = (timePastSinceFirstTrain.asSeconds() / frequency)
+        console.log("Time Train Has Came " + numberOfTimesTrainHasCome)
+        var remainder = (timePastSinceFirstTrain.asSeconds() % frequency)
+        console.log("Remainder " + remainder)
+        var remainderasDuration = moment.duration(remainder, 'seconds')
+        var secondsToWait = moment(d).add(remainderasDuration)
+        console.log("Minutes to wait " + secondsToWait)
+        console.log("Minutes since last train has left = " + moment.duration(remainder, 'seconds').asMinutes())
+        ntrainTime = moment.duration((frequency - remainder), 'seconds').humanize()
+        console.log("Time to wait" + ntrainTime)
       
     }else{
         //how many minutes to the first trian arival time | arivalTime - nowTime 
         var d = new moment()
         var c = new moment(_trainob.trainArriveH + ":" + _trainob.trainArriveM, "HH:mm")
-        var dur = moment.duration(d.diff(c))
-        ntrainTime = dur.asMinutes()
+        var dur = moment.duration(c.diff(d))
+        ntrainTime = dur.humanize()
     }
     
     

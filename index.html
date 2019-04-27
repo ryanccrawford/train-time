@@ -69,16 +69,16 @@
         
                                     </div>
                                     <div class="col-3">  
-                                    <label class="center">First Train Arrial Time (HH:00)</label>
+                                    <label class="center">First Train Arrives (HH:MM) 24 Hour format</label>
                                     <div>
                                     <i class="fas fa-clock    "></i>    
-                                    <input type="number" name="" id="trainArriveH" class="hh form-control" placeholder="00" aria-describedby="helpId"><span> : </span>
-                                    <input type="number" name="" id="trainArriveM" class="mm form-control" placeholder="00" aria-describedby="helpId">
+                                    <input type="number" name="" id="trainArriveH" class="hh form-control" placeholder="00" min="00" max=23><span> : </span>
+                                    <input type="number" name="" id="trainArriveM" class="mm form-control" placeholder="00" min="00" max=59>
                                     </div>   
-                                    <label class="center" for="frequency">Frequency</label>
+                                    <label class="center" for="frequency">Frequency in minutes</label>
                                     <div >
-                                            <i class="fas fa-clock    "></i> 
-                                    <input type="number" name="" id="frequency" class="mm form-control" placeholder="0" aria-describedby="helpId">
+                                            <i class="fas fa-clock"></i> 
+                                    <input type="number" name="" id="frequency" class="mm form-control" placeholder="0" max=1440 min=0>
                                     <button type="button" id="addit" class="btn btn-primary btn-lg fas fa-plus-square float-right"> Add</button>    
                                 </div>
                                     </div>
