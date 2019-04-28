@@ -1,3 +1,23 @@
+@font-face {
+    font-family: 'dotmatirx';
+    src: url('./fonts/dotmatrixfont.ttf') format('truetype');
+
+}
+
+* {
+    font-family: gender;
+
+}
+th{
+    font-weight: bold;
+}
+#logo{
+    width: 20%;
+}
+.arrive{
+    color:green;
+}
+
 .hh{
     width: 60px !important;;
     display: inline-block !important;
@@ -5,4 +25,35 @@
 .mm{
     width: 60px !important;
     display: inline-block !important;
+}
+tr:nth-child(even) {
+    background: rgb(162, 204, 238);
+    color:white;
+}
+
+.td-center, th{
+    text-align: center;
+
+}
+#timelogo img {
+    width: 100px;
+}
+td{
+    /**
+    font-family: 'dotmatirx' !important;
+    **/
+    font-size: 20px;
+}
+.back{
+background-color: darkgrey;
+
+}
+.interval{
+ width: 90px !important;
+ display: inline-block !important;
+ text-align: right;
+
+}
+.remove{
+    display: none;
 }

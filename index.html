@@ -10,14 +10,33 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-  <body>
+  <body class="back">
       <div class="container-fluid">
     <div class="row">
        
-                <div class="shadow p-3 mb-5 bg-primary text-white rounded w-100">
+                <div class="shadow p-3 mb-5 bg-secondary text-white rounded w-100">
                         <div class="container">
-                            <h1 class="display-3">Train Time | PRO</h1>
-                            <p class="lead muted-text">Train Schedule Administration System</p>
+                                                        <h1 class="display-3"><span id="timelogo" class="text-white"></span>Train Time | PRO</h1>
+                            <img id="logo" class="float-right" src="assets/images/trains.png" alt="">
+                                                        <p class="lead muted-text">Train Schedule Administration System</p>
+                            
+                            <nav class="navbar navbar-expand-sm navbar-light bg-light">
+                                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+                                    data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+                                    aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse" id="collapsibleNavId">
+                                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                                        <li class="nav-item active">
+                                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="modal" data-target="#admintrain" href="#">Administration</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
                         </div>
                     </div>
 
@@ -26,19 +45,22 @@
       <div class="container">
             <div class='row'>
            <div class="col-12">
-                    <div class="card shadow-sm p-3 mb-5 bg-white rounded w-100">
+                    <div class="card shadow-sm p-3 mb-5 rounded w-100">
                         <div class="card-header">
                             <h5 card="card-title">Live Train Schedule</h5>
+                            <p>'Train Arriving' Will show when train is 3 Seconds away</p>
                         </div>
                         <div class='card-body'>
-                            <table class="table">
+                            <table class="table bg-white p-3">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Train Name</th>
-                                        <th scope="col">Destination</th>
-                                        <th scope="col">First Trian Arrives (HH:MM)</th>
-                                        <th scope="col">Frequency (Minutes)</th>
-                                        <th scope="col">Next Train Arrives</th>
+                                        <th class="col1" style="vertical-align: top;">Train Name</th>
+                                        <th class="col2" style="vertical-align: top;">Destination</th>
+                                        <th class="col2" style="vertical-align: top;">First Trian Arrives</th>
+                                        <th class="col2" style="vertical-align: top;">Frequency (Minutes)</th>
+                                        <th class="col2" style="vertical-align: top;">Next Train Arrives
+                                            (Minutes:seconds)</th>
+                                        <th class="col2 remove" style="vertical-align: top;">Remove</th>
                                     </tr>
                                 </thead>
                                 <tbody id='tableBody'>
@@ -49,52 +71,63 @@
                 </div>
         </div>
       </div>
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow-sm p-3 mb-5 bg-white rounded w-100">
-                <div class="card-body">
-                    <h4 class="card-title">Add a Train</h4>
-                    <div id="validation" class="alert alert-danger" role="alert" style="display:none;">
-                    </div>
-                   
-                            <div class="form-group">
-                                    <div class="row">
-                                    <div class="col-9">
-                                    <label for="trainName">Train Name</label>
-                                    <input type="text" name="" id="trainName" class="form-control" placeholder="Train Name" aria-describedby="helpId">
+      <div class="modal fade" id="admintrain" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title">Add a Train</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                       <div class="container-fluid">
+                            <div id="validation" class="alert alert-danger" role="alert" style="display:none;">
+                            </div>
+                       <div class="form-group">
+                           <div class="row">
+                               <div class="col-9">
+                                   <label for="trainName">Train Name</label>
+                                   <input type="text" id="trainName" class="form-control" placeholder="Train Name"
+                                       aria-describedby="helpId">
 
-                                    <label for="destination">Destination</label>
-                                    <input type="text" name="" id="destination" class="form-control" placeholder="Downtown" aria-describedby="helpId">
-        
-                                    </div>
-                                    <div class="col-3">  
-                                    <label class="center">First Train Arrives (HH:MM) 24 Hour format</label>
-                                    <div>
-                                    <i class="fas fa-clock    "></i>    
-                                    <input type="number" name="" id="trainArriveH" class="hh form-control" placeholder="00" min="00" max=23><span> : </span>
-                                    <input type="number" name="" id="trainArriveM" class="mm form-control" placeholder="00" min="00" max=59>
-                                    </div>   
-                                    <label class="center" for="frequency">Frequency in minutes</label>
-                                    <div >
-                                            <i class="fas fa-clock"></i> 
-                                    <input type="number" name="" id="frequency" class="mm form-control" placeholder="0" max=1440 min=0>
-                                    <button type="button" id="addit" class="btn btn-primary btn-lg fas fa-plus-square float-right"> Add</button>    
-                                </div>
-                                    </div>
-                                    </div>
-                                  
-                                </div>
-                    
-                   
-                </div>
-            </div>
-                
-        </div>
-    </div>
-    
-</div>
+                                   <label for="destination">Destination</label>
+                                   <input type="text" id="destination" class="form-control" placeholder="Downtown"
+                                       aria-describedby="helpId">
 
+                               </div>
+                               <div class="col-3">
+                                   <label class="center">First Train Arrives (HH:MM) 24 Hour format</label>
+                                   <div>
+                                       <i class="fas fa-clock    "></i>
+                                       <input type="number" id="trainArriveH" class="hh form-control" placeholder="00"
+                                           min="00" max=23><span> : </span>
+                                       <input type="number" id="trainArriveM" class="mm form-control" placeholder="00"
+                                           min="00" max=59>
+                                   </div>
+                                   <label class="center" for="frequency">Frequency in minutes</label>
+                                   <div>
+                                       <i class="fas fa-clock"></i>
+                                       <input type="number" id="frequency" class="interval form-control"
+                                           placeholder="0" max=1440 min=0>
+                                      
+                                   </div>
+                               </div>
+                           </div>
+
+                       </div>
+                       </div>
+                       <button type="button" class="btn btn-secondary" id="remove">Delete a Train</button>
+                  </div>
+                  <div class="modal-footer">
+                      
+        <button type="button" id="addit" class="btn btn-primary btn-lg fas fa-plus-square float-right"> Add</button>
+         
+                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </div>
+      </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
