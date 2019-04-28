@@ -246,12 +246,12 @@ var trainTimeObj = function () {
         } else {
             cellNextTrain.text(ntrainTime)
         }
-        if (timerRef) {
+       
            
             var delicon = $('<td>').addClass('remove')
-            delicon.html(deleteTrainIcon).attr('id', 'remove_' + trainRow).data('key', _trainob.key)
+            delicon.html(deleteTrainIcon).attr('id', 'remove_' + _trainob.key).data('key', _trainob.key)
             var dkey = _trainob.key
-            $('#remove_' + trainRow).click(function (event) {
+            $('#remove_' + _trainob.key).click(function (event) {
                     clearTimeout(timerRef)
                 $('.remove').hide()
                var dk =  $(this).data('key')
@@ -260,7 +260,7 @@ var trainTimeObj = function () {
                     timmer = setInterval(updateTimeofNextTrain, 1000)
                     
             })
-        }
+       
         var row = $('<tr>')
         row.append(cellName)
             .append(cellDest)
@@ -269,7 +269,7 @@ var trainTimeObj = function () {
             .append(cellNextTrain)
             .addClass('td-center')
             .append(delicon)
-        trainRow++
+    
         return row
 
     }
