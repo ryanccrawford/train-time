@@ -57,3 +57,10 @@ background-color: darkgrey;
 .remove{
     display: none;
 }
+canvas#canvas {
+    margin-right: 2%;
+    vertical-align: middle;
+    height: 100%;
+    margin-top: -20px;
+    max-height: 100px;
+}
