@@ -42,8 +42,9 @@ var trainTimeObj = function () {
 
             if (snap) {
                 var data = snap.val()
-                data.key = snap.key
-                var tr = createRow(data)
+                var key = snap.key
+                data.key = key
+                var tr = createRow(snap)
 
                 $('#tableBody').append(tr)
             }
@@ -188,9 +189,9 @@ var trainTimeObj = function () {
         $('#frequency').val('')
     }
 
-    function createRow(_trainob) {
-
-
+    function createRow(snap) {
+        
+var _trainob = snap.val()
         var cellName = $('<td>')
         cellName.text(_trainob.trainName)
 
@@ -250,12 +251,10 @@ var trainTimeObj = function () {
        
            
             var delicon = $('<td>').addClass('remove')
-            delicon.html(deleteTrainIcon).attr('id', 'remove_' + _trainob.key).data('key', _trainob.key)
-            var dkey = _trainob.key
-            $('#remove_' + _trainob.key).click(function (event) {
+            delicon.html(deleteTrainIcon).attr('id', 'remove_' + snap.key).prop('data-key', snap.key).click(function (event) {
                     clearTimeout(timerRef)
-                $('.remove').hide()
-               var dk =  $(this).data('key')
+                //$('.remove').hide()
+               var dk =  $(this).prop('data-key')
                 database.ref('trains/' + dk).remove()
                 $(event.target.parentNode).empty()
                     timmer = setInterval(updateTimeofNextTrain, 1000)
@@ -307,7 +306,7 @@ var trainTimeObj = function () {
                 
                 var childData = childSnapshot.val();
                 
-                var tr = createRow(childData)
+                var tr = createRow(childSnapshot)
                 
                  $('#tableBody').append(tr)
             });
@@ -326,6 +325,8 @@ function makeClock() {
     var radius = canvas.height / 2;
     ctx.translate(radius, radius);
     radius = radius * 0.90
+    
+    
     setInterval(drawClock, 1000);
 
 
